@@ -1,0 +1,27 @@
+language: php
+
+sudo: required
+
+jobs:
+  fast_finish: true
+  include:
+    - php: 7.2
+      env: SWOOLE_VERSION="4.5.10"
+    - php: 7.3
+      env: SWOOLE_VERSION="4.5.11"
+    - php: 7.4
+      env: SWOOLE_VERSION="4.6.0"
+
+before_install:
+  - travis_retry composer self-update
+
+install:
+  - cd $TRAVIS_BUILD_DIR
+  - bash .travis/swoole.install.sh
+  - phpenv config-rm xdebug.ini || echo "xdebug not available"
+  - phpenv config-add .travis/ci.ini
+  - cp phpunit.xml.dist phpunit.xml
+  - travis_retry composer install --no-suggest --no-interaction
+
+script:
+  - composer test
