@@ -6,13 +6,9 @@ jobs:
   fast_finish: true
   include:
     - php: 7.2
-      env: SWOOLE_VERSION=4.5.11 HYPERF_VERSION=1.0.* PHPUNIT_VERSION=^7.0.0
-    - php: 7.2
-      env: SWOOLE_VERSION=4.5.11 HYPERF_VERSION=1.1.* PHPUNIT_VERSION=^7.0.0
-    - php: 7.2
-      env: SWOOLE_VERSION=4.6.7 HYPERF_VERSION=2.0.* PHPUNIT_VERSION=^7.0.0
+      env: SWOOLE_VERSION=4.5.11 HYPERF_VERSION=2.0.* PHPUNIT_VERSION=^7.0.0
     - php: 7.3
-      env: SWOOLE_VERSION=4.7.0 HYPERF_VERSION=2.1.* PHPUNIT_VERSION=^9.4
+      env: SWOOLE_VERSION=4.6.7 HYPERF_VERSION=2.1.* PHPUNIT_VERSION=^9.4
     - php: 7.4
       env: SWOOLE_VERSION=4.7.0 HYPERF_VERSION=2.2.* PHPUNIT_VERSION=^9.5
     - php: 8.0
@@ -20,12 +16,11 @@ jobs:
 
 before_install:
   - travis_retry composer self-update
-  - composer require "phpunit/phpunit:${PHPUNIT_VERSION}" --no-update --prefer-dist
   - composer require "hyperf/di:${HYPERF_VERSION}" --no-update --prefer-dist
   - composer require "hyperf/http-server:${HYPERF_VERSION}" --no-update --prefer-dist
-  - composer require "hyperf/config:${HYPERF_VERSION}" --no-update --prefer-dist
-  - composer require "hyperf/testing:${HYPERF_VERSION}" --no-update --prefer-dist
-  - composer require "hyperf/validation:${HYPERF_VERSION}" --no-update --prefer-dist
+  - composer require "hyperf/config:${HYPERF_VERSION}" --no-update --prefer-dist --dev
+  - composer require "hyperf/testing:${HYPERF_VERSION}" --no-update --prefer-dist --dev
+  - composer require "hyperf/validation:${HYPERF_VERSION}" --no-update --prefer-dist --dev
 
 install:
   - cd $TRAVIS_BUILD_DIR
@@ -33,7 +28,7 @@ install:
   - phpenv config-rm xdebug.ini || echo "xdebug not available"
   - phpenv config-add .travis/ci.ini
   - cp phpunit.xml.dist phpunit.xml
-  - travis_retry composer install --no-interaction --prefer-dist
+  - travis_retry composer update --no-interaction --prefer-dist
 
 script:
   - composer test
