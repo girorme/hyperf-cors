@@ -6,6 +6,10 @@ jobs:
   fast_finish: true
   include:
     - php: 7.2
+      env: SWOOLE_VERSION=4.5.11 HYPERF_VERSION=1.0.* PHPUNIT_VERSION=^7.0.0
+    - php: 7.2
+      env: SWOOLE_VERSION=4.5.11 HYPERF_VERSION=1.1.* PHPUNIT_VERSION=^7.0.0
+    - php: 7.2
       env: SWOOLE_VERSION=4.5.11 HYPERF_VERSION=2.0.* PHPUNIT_VERSION=^7.0.0
     - php: 7.3
       env: SWOOLE_VERSION=4.6.7 HYPERF_VERSION=2.1.* PHPUNIT_VERSION=^9.4

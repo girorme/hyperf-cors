@@ -90,7 +90,7 @@ class TestCase extends BaseTestCase
 
         $container->shouldReceive('get')->with(HttpDispatcher::class)->andReturn(new HttpDispatcher($container));
         $container->shouldReceive('get')->with(ExceptionHandlerDispatcher::class)->andReturn(new ExceptionHandlerDispatcher($container));
-        $container->shouldReceive('get')->with(ResponseEmitter::class)->andReturn(new ResponseEmitter());
+        class_exists(ResponseEmitter::class) && $container->shouldReceive('get')->with(ResponseEmitter::class)->andReturn(new ResponseEmitter());
         $container->shouldReceive('get')->with(DispatcherFactory::class)->andReturn($factory = new DispatcherFactory());
         $container->shouldReceive('get')->with(NormalizerInterface::class)->andReturn(new SimpleNormalizer());
         $container->shouldReceive('get')->with(MethodDefinitionCollectorInterface::class)->andReturn(new MethodDefinitionCollector());
@@ -123,9 +123,7 @@ class TestCase extends BaseTestCase
         $container->shouldReceive('make')->with(CoreMiddleware::class, Mockery::any())->andReturnUsing(function ($class, $args) {
             return new CoreMiddleware(...array_values($args));
         });
-        if (class_exists(Waiter::class)) {
-            $container->shouldReceive('get')->with(Waiter::class)->andReturn(new Waiter());
-        }
+        class_exists(Waiter::class) && $container->shouldReceive('get')->with(Waiter::class)->andReturn(new Waiter());
         ApplicationContext::setContainer($container);
 
         Router::init($factory);
