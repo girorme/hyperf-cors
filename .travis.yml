@@ -1,10 +1,12 @@
 language: php
 
+dist: xenial
+
+os: linux
+
 cache:
   directories:
     - $HOME/.composer/cache/files
-
-sudo: required
 
 jobs:
   fast_finish: true
